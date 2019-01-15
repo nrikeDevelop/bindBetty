@@ -229,12 +229,12 @@ function add_cname_nginx(){
 	read OPTION
 	if yes_or_not $OPTION
 	then 
-		echo_e yellow "  [+] Choose option 2 to safetly mode"
-		sleep 2
+		echo_e yellow " [+] Choose option 2 to safetly mode"
+		sleep 1
 		certbot --authenticator webroot --installer nginx --webroot-path /var/www/html/$CNAME/ -d $CNAME.$CURRENT_DOMAIN
 
 		echo_e green "[+] Configurated nginx"
-		echo_e green "[+] http://$CNAME.$CURRENT_DOMAIN"
+		echo_e green "[+] https://$CNAME.$CURRENT_DOMAIN"
 	fi
 		
 }
