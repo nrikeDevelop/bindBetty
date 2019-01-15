@@ -229,37 +229,10 @@ function add_cname_nginx(){
 	read OPTION
 	if yes_or_not $OPTION
 	then 
-		echo -ne "[?] Enter contact email : "
-		read EMAIL
-		sudo certbot certonly --webroot -w /var/www/html/$CNAME -d $CNAME.$CURRENT_DOMAIN --non-interactive --agree-tos --email $EMAIL
+		echo_e yellow "  [+] Choose option 2 to safetly mode"
+		sleep 2
+		certbot --authenticator webroot --installer nginx --webroot-path /var/www/html/$CNAME/ -d $CNAME.$CURRENT_DOMAIN
 
-		sleep 1
-	
-		#mv /etc/letsencrypt/live/* /var/www/.letsencrypt/$CNAME.$CURRENT_DOMAIN
-		
-		rm -r $NGINX_FILE
-		echo '
-		server {
-			listen   80;
-			server_name '$CNAME'.'$CURRENT_DOMAIN';
-			return 301 https://'$CNAME'.'$CURRENT_DOMAIN';
-		}
-		
-		server {
-			listen 443 ssl default_server;
-			ssl_certificate /etc/letsencrypt/live/'$CNAME'.'$CURRENT_DOMAIN'/fullchain.pem;
-			ssl_certificate_key /etc/letsencrypt/live/'$CNAME'.'$CURRENT_DOMAIN'/privkey.pem;
-
-			root /var/www/html/'$CNAME';
-			index index.php index.html index.html;
-			server_name '$CNAME'.'$CURRENT_DOMAIN';
-
-		}'>>$NGINX_FILE
-
-			service nginx stop
-			service bind9 stop
-			service bind9 start
-			service nginx start
 		echo_e green "[+] Configurated nginx"
 		echo_e green "[+] http://$CNAME.$CURRENT_DOMAIN"
 	fi
@@ -276,6 +249,7 @@ is_installed curl
 is_installed bind9
 is_installed nginx
 is_installed letsencrypt
+is_installed python-certbot-nginx
 
 #CHECK INIT MENU OPTIONS
 init_menu $1
@@ -434,7 +408,7 @@ else
  	#fi
 
 	echo_e green "[+] 	Configuration finished" 
-	
+
 
 
 	echo ""
