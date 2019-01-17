@@ -205,15 +205,13 @@ function add_cname_nginx(){
 
     NGINX_FILE="/etc/nginx/sites-available/"$CNAME
 
-		echo '
-		server {
-			## Listen 80 (HTTP)
-			listen   80; 
-			root '/var/www/html/$CNAME';
-			index index.php index.html index.html;
-			server_name '$CNAME'.'$CURRENT_DOMAIN';
-		}
-		'>>$NGINX_FILE
+echo '
+server {
+	listen   80; 
+	root '/var/www/html/$CNAME';
+	index index.php index.html index.html;
+	server_name '$CNAME'.'$CURRENT_DOMAIN';
+}'>>$NGINX_FILE
 
 	ln -s /etc/nginx/sites-available/$CNAME /etc/nginx/sites-enabled/
 	service nginx stop
